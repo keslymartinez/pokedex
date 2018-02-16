@@ -1,4 +1,3 @@
-
 const $form = $('#search-form')
 const $searchInput = $('#search')
 const $result = $('#result-pokemon')
@@ -17,19 +16,44 @@ for (var i = 0; i < 20; i++) {
 
     function addPokemons(news) {
         const pokes = news.results;
-        console.log(pokes);
         const names = news.name;
         const imgs = news.sprites.front_default;
+        const types = news.types[0].type.name
 
-        let $list = $(`
-                    
+        let $list = $(`              
                         <div class="col-xs-4 text-center">
                             <div class="thumbnail">
                                 <img src="${imgs}" alt="pokemon">
                                 <div class="caption">
                                     <h3>${names}</h3>
+                                    <p>${types}</p>
                                 </div>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ver información</button>
                             </div>
+                        </div>
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-sm">
+
+                            <!-- Modal content-->
+                            <div class="modal-content text-center">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h1 class="modal-title">${names}</h1>
+                            </div>
+                            <div class="modal-body">
+                                <h4>N°: ${news.id}</h4>
+                                <img src="${imgs}" alt="pokemon">
+                                <p>type: ${types}</p>
+                                <p>height: ${news.height}</p>
+                                <p>weight: ${news.weight}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+
+                        </div>
                         </div>
                    
                 `)
@@ -37,15 +61,13 @@ for (var i = 0; i < 20; i++) {
     }
 }
 
-//estaba aqui
-
 $form.submit(function (e) {
     e.preventDefault()
     $result.html('')
     searched = $searchInput.val()
     getPokemon();
 })
-// ------------------------
+
 function getPokemon() {
     $.ajax({
             url: `https://pokeapi.co/api/v2/pokemon/${searched}/`
@@ -60,7 +82,6 @@ function addPokemon(news) {
     const type = news.types[0].type.name
 
     let $div = $(`
-                    
                         <div class="col-xs-4 col-xs-offset-4 text-center">
                             <div class="thumbnail">
                                 <img src="${img}" alt="pokemon">
@@ -68,93 +89,37 @@ function addPokemon(news) {
                                     <h3>${name}</h3>
                                     <p>${type}</p>
                                 </div>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ver información</button>
                             </div>
                         </div>
-                    
-                `)  
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-sm">
+
+                            <!-- Modal content-->
+                            <div class="modal-content text-center">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h1 class="modal-title">${name}</h1>
+                            </div>
+                            <div class="modal-body">
+                                <h4>N°: ${news.id}</h4>
+                                <img src="${img}" alt="pokemon">
+                                <p>type: ${type}</p>
+                                <p>height: ${news.height}</p>
+                                <p>weight: ${news.weight}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+
+                        </div>
+                        </div>
+                `)
     $result.append($div)
 }
 
 function error() {
     console.log('Se ha presentado un error')
 }
-// -------------------------------
-// (https://pokeapi.co/api/v2/pokemon/) muestra todos los pokemon
-// (https://pokeapi.co/api/v2/pokemon/n°pokemon) muestra los datos del pokemon
-
-
-//  function getPokemon() {
-//       console.log('hola');
-
-//     const myGif = document.getElementById('result-pokemon')
-//     fetch(`https://pokeapi.co/api/v2/pokemon/${searched}/`)
-//       .then(function(response) {
-//         // Turns the the JSON into a JS object
-//         return response.json();
-//       })
-//       .then(function(data) {
-//         console.log(data); 
-
-//         let html = ` 
-
-//                   <img src="${data.sprites.front_shiny}" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
-
-//                   <h5 class="black-text light">${data.name} </h5>
-//                   <span class="black-text">Tipo: ${data.types[0].type.name} </span>
-
-//                `;
-//         myGif.innerHTML = html;
-//       });
-//   }
-// function getRandomInt(min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-// }
-
-
-//   for(var i = 0 ; i < 5; i++){
-//       const num = getRandomInt(0, 200)
-
-//       fetch(`https://pokeapi.co/api/v2/pokemon/${num}/`)
-//           .then(function (response) {
-//               // Turns the the JSON into a JS object
-//               return response.json();
-//           })
-//           .then(function (data) {
-//               console.log(data);
-
-//               $('#result-pokemon').append( ` 
-
-//                   <img src="${data.sprites.front_shiny}" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
-//                   <h5 class="black-text light">${data.name} </h5>
-//                   <span class="black-text">Tipo: ${data.types[0].type.name} </span>`
-//            )
-//           });
-//   }
-
-        // for (var i = 0; i < 5; i++) {
-        //     const num = getRandomInt(0, 200)
-
-        //      $.ajax({
-        //     url: `https://pokeapi.co/api/v2/pokemon/${num}/`
-        //     })
-
-
-        // const pokes = news.results
-        // console.log(pokes);
-        // const names = news.name
-        // const imgs = news.sprites.front_default
-
-        // let $list = $(`
-        //             <div class="row">
-        //                 <div class="col-xs-4 col-xs-offset-4 text-center">
-        //                     <div class="thumbnail">
-        //                         <img src="${imgs}" alt="pokemon">
-        //                         <div class="caption">
-        //                             <h3>${names}</h3>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         `)
-        // $result.append($list)
-        // }
